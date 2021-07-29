@@ -1,4 +1,5 @@
-
+var player1score=0;
+var player2score=0
 function preload(){
   icecubeImg=loadImage("ice cube.png")
   ironboxImg=loadImage("iron box.png")
@@ -15,10 +16,14 @@ edges=createEdgeSprites()
 
   paddle=createSprite(100,250 ,50,200)
   paddle.addImage(player1Img)
+  paddle.setCollider("rectangle",0,0,100,250);
+  paddle.debug = false
+
   
   paddle2=createSprite(1900,250 ,50,200)
   paddle2.addImage(player2Img)
-
+  paddle2.setCollider("rectangle",0,0,100,250);
+  paddle2.debug = false
 
   
 ball=createSprite(1840,250 ,30,30)
@@ -29,8 +34,11 @@ ball2.addImage(ballImg)
 ball2.scale =0.2
 
 
-ball.velocityX=-4
-ball.bounceOff(edges)
+ball.velocityX=-8
+ball.velocityY=-8
+
+ball2.velocityX=8
+ball2.velocityY=-8
 
 spritegroup=new Group()
   trophy= createSprite(1000,400,100,100)
@@ -43,6 +51,8 @@ sprite.shapeColor="pink"
 sprite.scale=0.2
 
 sprite.addImage(icecubeImg)
+sprite.setCollider("rectangle",0,0,200,200);
+      sprite.debug = true
 
   }
 
@@ -53,6 +63,8 @@ sprite.addImage(icecubeImg)
  sprite1.shapeColor="green"
  sprite1.addImage(icecubeImg)
  sprite1.scale = 0.2
+ sprite1.setCollider("rectangle",0,0,200,200);
+      sprite1.debug = true
   }
 
   line1 = createSprite(410,400,5,800)
@@ -75,6 +87,10 @@ sprite.addImage(icecubeImg)
  sprite2.shapeColor="red"
  sprite2.addImage(icecubeImg)
  sprite2.scale=0.2
+ 
+ sprite2.setCollider("rectangle",0,0,200,200);
+ sprite2.debug = true
+
   }
   
   for (var i = 50; i < 800; i=i+110) 
@@ -83,8 +99,9 @@ sprite.addImage(icecubeImg)
      spritegroup.add(sprite3)
  sprite3.shapeColor="purple"
 sprite3.addImage(icecubeImg)
-
 sprite3.scale = 0.2
+sprite3.setCollider("rectangle",0,0,200,200);
+ sprite3.debug = true
 
   }
 
@@ -93,6 +110,8 @@ sprite3.scale = 0.2
     spritegroup.add(row1)
     row1.addImage(woodboxImg)
     row1.scale=0.2
+    row1.setCollider("rectangle",0,0,200,200);
+    row1.debug = true
     }
    
     for( var r2=50; r2<800; r2=r2+110 ){
@@ -100,13 +119,16 @@ sprite3.scale = 0.2
     spritegroup.add(row2)
     row2.addImage(ironboxImg)
     row2.scale=0.2
+    row2.setCollider("rectangle",0,0,200,200);
+      row2.debug = true
     }
     for( var r1=50; r1<800; r1=r1+110){
       row1=createSprite(760,r1,20,100)
       row1.addImage(woodboxImg)
       row1.scale=0.2
       spritegroup.add(row1)
-      
+      row1.setCollider("rectangle",0,0,200,200);
+    row1.debug = true
       }
      
       for( var r2=50; r2<800; r2=r2+110 ){
@@ -114,7 +136,8 @@ sprite3.scale = 0.2
       row2.addImage(ironboxImg)
       spritegroup.add(row2)
       row2.scale=0.2
-      
+      row2.setCollider("rectangle",0,0,200,200);
+      row2.debug = true
       }
    
     for( var r3=50; r3<800; r3=r3+110 ){
@@ -123,6 +146,8 @@ sprite3.scale = 0.2
     row3.addImage(woodboxImg)
     spritegroup.add(row2)
     row3.scale=0.2
+    row3.setCollider("rectangle",0,0,200,200);
+    row3.debug = true
     
     }
     
@@ -132,7 +157,8 @@ sprite3.scale = 0.2
     row4.addImage(ironboxImg)
       spritegroup.add(row2)
       row4.scale=0.2
-      
+      row4.setCollider("rectangle",0,0,200,200);
+      row4.debug = true
     }
     for( var r3=50; r3<800; r3=r3+110 ){
       row3=createSprite(1260,r3,20,100)
@@ -140,7 +166,8 @@ sprite3.scale = 0.2
       row3.addImage(woodboxImg)
       spritegroup.add(row2)
       row3.scale=0.2
-      
+      row3.setCollider("rectangle",0,0,200,200);
+      row3.debug = true
     
       }
       
@@ -150,16 +177,29 @@ sprite3.scale = 0.2
       row4.addImage(ironboxImg)
       spritegroup.add(row2)
       row4.scale=0.2
+      row4.setCollider("rectangle",0,0,200,200);
+      row4.debug = true
       }
     
-
+      line1.visible = false;
+      line2.visible = false;
+      line3.visible = false;
+      line4.visible = false;
 
       
 }
 function draw() {
   background(bg);  
+  textSize (30)
+  textFont("Broadway");
+   fill("yellow");
+   stroke("red");
+   strokeWeight(5);
+  text ( "score: " + player1score, 100,50)
+  text ( "score: " + player2score, 1800,50)
   drawSprites();
-
+ball.bounceOff(edges)
+ball2.bounceOff(edges)
 if (keyDown("up")){
   paddle2.y-=5
 }
@@ -177,14 +217,56 @@ if(keyDown("s")){
 }
 
 ball.bounceOff(spritegroup, brickHit)
-ball2.bounceOff(spritegroup,brickHit)
+ball2.bounceOff(spritegroup,brickHit2)
+
+if (player1score==140){
+  line1.destroy();
+}
+if (player1score==420){
+  line3.destroy()
+}
+if (player2score==140){
+  line2.destroy()
+}
+if (player2score==420){
+  line4.destroy()
+}
+
+ball2.bounceOff(line1)
+ball.bounceOff(line2)
+ball2.bounceOff(line3)
+ball.bounceOff(line4)
+
+
+ball2.bounceOff(paddle)
+ball.bounceOff(paddle2)
+if (ball.isTouching(trophy)){
+  ball.setVelocity(0,0)
+  ball2.setVelocity(0,0)
+
+  textSize(50)
+  text (" game Over , player2 wins" , 400,400)
+}
+
+if (ball2.isTouching(trophy)){
+  ball.setVelocity(0,0)
+  ball2.setVelocity(0,0)
+  textSize(50)
+  text (" game Over , player1 wins" , 400,400)
+}
 }
 
 
 function brickHit(ball, brick) {
+  player2score +=10
+  brick.remove(); 
+} 
+function brickHit2(ball, brick) {
+  player1score +=10
   brick.remove(); 
 } 
 
+ 
 
 
 
